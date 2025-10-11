@@ -15,13 +15,13 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-indigo-950">
       <nav className="p-4 bg-indigo-950 text-white shadow-lg flex justify-between items-center">
         <div>
-          <Link to="/" className="font-bold text-lg">
-            Bloggs
+          <Link to="/" className="hover:text-blue-300 font-bold text-lg">
+            Home
           </Link>
         </div>
 
         <div className="flex items-center space-x-5">
-          {user && <Link to="/my">My Blogs</Link>}
+          {user && <Link to="/my" className='hover:text-yellow-200'>My Blogs</Link>}
           {user ? (
             <div className="flex items-center gap-x-5">
               <button

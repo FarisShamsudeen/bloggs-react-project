@@ -78,7 +78,6 @@ export default function MyBlogs() {
 
   return (
     <div className="space-y-4 relative">
-      {/* ✅ Toast Alert */}
       {alert && (
         <AlertToast
           type={alert.type}
