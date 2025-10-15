@@ -6,44 +6,49 @@ import remarkGfm from "remark-gfm";
 import { useAuth } from "../contexts/AuthContext";
 import EditModal from "../components/EditModal";
 import DeleteModal from "../components/DeleteModal";
-import AlertToast from "../components/AlertToast";
+import { useToast } from "../contexts/ToastContext";
 
 export default function BlogPage() {
   const { id } = useParams();
   const [blog, setBlog] = useState<any>(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [alert, setAlert] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const { user, getIdToken } = useAuth();
+  const { showToast } = useToast();
   const nav = useNavigate();
 
+  // Load the blog
   useEffect(() => {
     if (!id) return;
     axios
       .get(`/blogs/${id}`)
       .then((res) => setBlog(res.data))
-      .catch(() =>
-        setAlert({ type: "error", message: "⚠️ Failed to load blog post." })
-      );
+      .catch(() => showToast("error", "⚠️ Failed to load blog post."));
   }, [id]);
 
+  // Handle delete
   const handleDelete = async () => {
     try {
-      if (!user) return alert("Login required");
+      if (!user) return showToast("error", "Login required");
       const token = await getIdToken();
       await axios.delete(`/blogs/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setAlert({ type: "success", message: "🗑️ Blog deleted successfully!" });
-      setTimeout(() => nav("/"), 2000); // slight delay for toast visibility
+
+      // ✅ Navigate first, then show toast after redirect
+      nav("/");
+      setTimeout(() => {
+        showToast("success", "🗑️ Blog deleted successfully!");
+      }, 150);
     } catch (error) {
-      setAlert({ type: "error", message: "❌ Failed to delete blog." });
+      showToast("error", "❌ Failed to delete blog.");
     }
   };
 
+  // Handle edit
   const handleEditSubmit = async (title: string, content: string) => {
     try {
-      if (!user) return alert("Login required");
+      if (!user) return showToast("error", "Login required");
       const token = await getIdToken();
       const res = await axios.put(
         `/blogs/${id}`,
@@ -52,23 +57,14 @@ export default function BlogPage() {
       );
       setBlog(res.data);
       setShowEditModal(false);
-      setAlert({ type: "success", message: "✅ Blog updated successfully!" });
+      showToast("success", "✅ Blog updated successfully!");
     } catch (error) {
-      setAlert({ type: "error", message: "❌ Failed to update blog." });
+      showToast("error", "❌ Failed to update blog.");
     }
   };
 
   return blog ? (
     <div className="relative max-w-3xl mx-auto bg-indigo-950 text-blue-100 p-6 rounded-2xl border border-blue-200">
-      {/* ✅ Toast Notification */}
-      {alert && (
-        <AlertToast
-          type={alert.type}
-          message={alert.message}
-          onClose={() => setAlert(null)}
-        />
-      )}
-
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">{blog.title}</h1>
 

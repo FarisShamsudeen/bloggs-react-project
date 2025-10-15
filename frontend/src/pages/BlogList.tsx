@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "../api/axios";
 import BlogCard from "../components/BlogCard";
 import BlogEditor from "../components/BlogEditor";
@@ -44,13 +44,6 @@ export default function BlogList() {
         <p className="text-gray-500 text-gray-400">
           Write, learn, and grow together ✍️
         </p>
-      </div>
-
-      <div className="bg-indigo-950 p-6 rounded-2xl shadow-2xl border border-blue-500">
-        <h3 className="text-xl font-semibold mb-4 text-white">
-          Create a new post
-        </h3>
-        <BlogEditor onSubmit={handleCreate} submitLabel="Publish" />
       </div>
 
       {loading ? (

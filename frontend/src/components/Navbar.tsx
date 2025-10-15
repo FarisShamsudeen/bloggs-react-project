@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ConfirmModal from "./ConfirmModal";
 import LoginModal from "./LoginModal";
 import { useAuth } from "../contexts/AuthContext";
@@ -8,15 +8,31 @@ const Navbar: React.FC = () => {
   const { user, logout } = useAuth();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [loginLocked, setLoginLocked] = useState(false); // 👈 new state
+  const [loginLocked, setLoginLocked] = useState(false);
+  const navigate = useNavigate();
+
+  const handleCreateClick = () => {
+    if (!user) {
+      alert("Please login to create a new blog."); // ⚠️ shown for logged-out users
+    } else {
+      navigate("/create");
+    }
+  };
 
   return (
     <>
       <nav className="p-4 bg-indigo-950 text-white shadow-lg flex justify-between items-center">
-        <div>
+        <div className="flex items-center gap-6">
           <Link to="/" className="hover:text-blue-300 font-bold text-lg">
             Home
           </Link>
+
+          <button
+            onClick={handleCreateClick}
+            className="bg-blue-600 px-4 py-1.5 rounded-lg hover:bg-blue-700 transition text-white font-medium"
+          >
+            Create
+          </button>
         </div>
 
         <div className="flex items-center space-x-5">
