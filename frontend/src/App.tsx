@@ -4,8 +4,9 @@ import Login from "./pages/Login";
 import BlogList from "./pages/BlogList";
 import BlogPage from "./pages/BlogPage";
 import MyBlogs from "./pages/MyBlogs";
-import CreateBlog from "./pages/CreateBlog"; 
+import CreateBlog from "./pages/CreateBlog";
 import Navbar from "./components/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App: React.FC = () => {
   return (
@@ -16,8 +17,23 @@ const App: React.FC = () => {
           <Route path="/" element={<BlogList />} />
           <Route path="/login" element={<Login />} />
           <Route path="/blogs/:id" element={<BlogPage />} />
-          <Route path="/my" element={<MyBlogs />} />
-          <Route path="/create" element={<CreateBlog />} /> 
+
+          <Route
+            path="/my"
+            element={
+              <ProtectedRoute>
+                <MyBlogs />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/create"
+            element={
+              <ProtectedRoute>
+                <CreateBlog />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
     </div>

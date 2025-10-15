@@ -15,7 +15,6 @@ export const firebaseAuth = async (req: AuthRequest, res: Response, next: NextFu
     }
 
     const idToken = authHeader.split("Bearer ")[1]?.trim();
-
     if (!idToken) {
       return res.status(401).json({ message: "Missing ID token" });
     }
@@ -28,13 +27,11 @@ export const firebaseAuth = async (req: AuthRequest, res: Response, next: NextFu
     next();
   } catch (err: any) {
     if (err?.code === "auth/argument-error") {
-      // don't log noisy token errors from early frontend requests
       return res.status(401).json({ message: "Invalid or missing token" });
     }
 
-    console.error("auth error:", err);
-
-    return res.status(401).json({ message: "Unauthorized" });
+    console.error("🔥 Firebase auth error:", err);
+    return res.status(401).json({ message: "Unauthorized or expired token" });
   }
 };
 
