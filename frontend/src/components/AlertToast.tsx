@@ -1,4 +1,3 @@
-// src/components/AlertToast.tsx
 import React, { useEffect, useState } from "react";
 
 interface AlertToastProps {
@@ -11,13 +10,11 @@ export default function AlertToast({ type, message, onClose }: AlertToastProps) 
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // Animate in
     setVisible(true);
 
-    // Auto-hide after 4s
     const timer = setTimeout(() => {
       setVisible(false);
-      setTimeout(() => onClose(), 300); // allow animation to finish
+      setTimeout(() => onClose(), 300); 
     }, 4000);
 
     return () => clearTimeout(timer);

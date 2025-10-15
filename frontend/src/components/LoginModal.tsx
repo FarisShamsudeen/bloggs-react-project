@@ -9,11 +9,11 @@ interface LoginModalProps {
 const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
   const { loginWithGoogle } = useAuth();
   const nav = useNavigate();
-  const [loading, setLoading] = useState(false); // 🌀 loading state
+  const [loading, setLoading] = useState(false); 
   const [error, setError] = useState<string | null>(null);
 
   const handleLogin = async () => {
-    if (loading) return; // block double clicks
+    if (loading) return;
     setLoading(true);
     setError(null);
 
@@ -29,7 +29,6 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
     }
   };
 
-  // ✅ Only close when *not* loading
   const handleBackdropClick = () => {
     if (!loading) onClose();
   };
@@ -46,7 +45,6 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
         <h1 className="text-3xl font-semibold">Welcome to Bloggs</h1>
         <p className="text-gray-400">Sign in to continue</p>
 
-        {/* Google Login Button */}
         <button
           onClick={handleLogin}
           disabled={loading}
@@ -74,10 +72,8 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
           )}
         </button>
 
-        {/* Error Message */}
         {error && <p className="text-red-400 text-sm">{error}</p>}
 
-        {/* Cancel Button */}
         <button
           onClick={onClose}
           disabled={loading}
