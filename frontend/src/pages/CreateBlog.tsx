@@ -25,7 +25,6 @@ export default function CreateBlog() {
 
       navigate("/"); // redirect first
 
-      // then show toast after short delay so it's visible on Home
       setTimeout(() => {
         showToast("success", "🎉 Blog created successfully!");
       }, 200);
